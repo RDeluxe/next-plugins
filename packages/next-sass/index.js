@@ -1,24 +1,24 @@
-const cssLoaderConfig = require('@zeit/next-css/css-loader-config')
+const cssLoaderConfig = require("../next-css/css-loader-config");
 
 module.exports = (nextConfig = {}) => {
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
       if (!options.defaultLoaders) {
         throw new Error(
-          'This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade'
-        )
+          "This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade"
+        );
       }
 
-      const { dev, isServer } = options
+      const { dev, isServer } = options;
       const {
         cssModules,
         cssLoaderOptions,
         postcssLoaderOptions,
         sassLoaderOptions = {}
-      } = nextConfig
+      } = nextConfig;
 
       options.defaultLoaders.sass = cssLoaderConfig(config, {
-        extensions: ['scss', 'sass'],
+        extensions: ["scss", "sass"],
         cssModules,
         cssLoaderOptions,
         postcssLoaderOptions,
@@ -26,11 +26,11 @@ module.exports = (nextConfig = {}) => {
         isServer,
         loaders: [
           {
-            loader: require.resolve('sass-loader'),
+            loader: require.resolve("sass-loader"),
             options: sassLoaderOptions
           }
         ]
-      })
+      });
 
       config.module.rules.push(
         {
@@ -41,13 +41,13 @@ module.exports = (nextConfig = {}) => {
           test: /\.sass$/,
           use: options.defaultLoaders.sass
         }
-      )
+      );
 
-      if (typeof nextConfig.webpack === 'function') {
-        return nextConfig.webpack(config, options)
+      if (typeof nextConfig.webpack === "function") {
+        return nextConfig.webpack(config, options);
       }
 
-      return config
+      return config;
     }
-  })
-}
+  });
+};
